@@ -1,0 +1,46 @@
+h1.home{
+    color: blue;
+    background-color: rgb(63, 181, 227);
+    text-align: center;
+}
+nav{
+    position: sticky;
+    top: 0;
+}
+nav ul{
+    background-color: rgb(41, 50, 167);
+    display:flex;
+    margin: 0px;
+    padding: 0px;
+    justify-content: center;
+}
+nav ul li{
+    display: inline-block;
+    border:1px solid white;
+    text-align: center;
+    cursor: pointer;
+    padding: 10px 50px 10px 50px;
+}
+nav ul li:hover{
+    background-color: rgb(237, 148, 148);
+    border:1px solid black;
+}
+nav ul li a{
+    text-decoration: none;
+    color: white;
+}
+nav ul li:hover a{
+    color: rgb(10, 10, 10);
+}--hhh
+body {
+  font-family: Arial, sans-serif;
+  margin: 10px;
+}
+form {
+  max-width: 400px;
+  margin: auto;
+}
+input, select, button {
+  width: 100%;   /* chiếm toàn bộ chiều ngang trên mobile */
+  margin-bottom: 10px;
+}

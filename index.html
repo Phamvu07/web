@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link rel="stylesheet" href="Dinhdang.css">
+        <title>web.com</title>
+    </head>
+    <body>
+        <h1 id="home" class="home">WEB SITE QUẢN LÝ CÁ NHÂN</h1>
+        <nav>
+            <ul>
+                <li onclick="location.href=this.querySelector('a').getAttribute('href')"><a href="#home">Home</a></li>
+                <li onclick="location.href=this.querySelector('a').getAttribute('href')"><a href="#lichhoc">Lịch học</a></li>
+                <li onclick="location.href=this.querySelector('a').getAttribute('href')"><a href="#taichinh">Tài chính</a></li>
+                <li onclick="location.href=this.querySelector('a').getAttribute('href')"><a href="#lienhe">Liên hệ</a></li>
+            </ul>
+        </nav>
+    <h2>HOME</h2>
+    <p>
+        Chào mừng bạn đến với trang web cá nhân của tôi!, 
+        tôi là một người yêu công nghệ và thích học hỏi những điều mới mẻ.<br>
+        Đây là nơi quản lý lịch trình của tôi.<br>
+        Sắp xếp thời gian học tập và các hoạt động khác một cách hiệu quả là điều quan trọng để đạt được thành công trong học tập và cuộc sống.<br>
+        Tôi hy vọng trang web này sẽ giúp tôi quản lý thời gian của mình một cách tốt hơn và đạt được những mục tiêu mà tôi đã đặt ra.<br>
+    </p>
+    </body>
+    <h2 id="lichhoc">Lịch học</h2>
+    <p>Thông tin về lịch học sẽ được hiển thị ở đây.</p>
+    <table border="1" id="tkb">
+        <tr>
+            <th></th>
+            <th>T2</th>
+            <th>T3</th>
+            <th>T4</th>
+            <th>T5</th>
+            <th>T6</th>
+            <th>T7</th>
+            <th>CN</th>
+        </tr>
+        <tr>
+            <td>7h-8h</td>
+            <td rowspan="2"></td>
+            <td rowspan="2">Đồ họa máy tính</td>
+            <td></td>
+            <td rowspan="2">Chủ nghĩa xã hội khoa học</td>
+            <td rowspan="2">TH Cơ sở dữ liệu II</td>
+            <td rowspan="2"></td>
+            <td rowspan="5"></td>
+        </tr>
+        <tr>
+            <td>8h-9h</td>
+            <td rowspan="4">Lập trình hướng đối tượng</td>
+        </tr>
+        <tr>
+            <td>9h-10h</td>
+            <td rowspan="3">Tiếng Anh A2.1</td>
+            <td rowspan="3"></td>
+            <td rowspan="3"></td>
+            <td rowspan="3"></td>
+            <td rowspan="2">Kỹ năng làm việc nhóm</td>
+        </tr>
+        <tr>
+            <td>10h-11h</td>
+        </tr>
+        <tr>
+            <td>11h-12h</td>
+            <td></td>
+        </tr>
+        <tr>
+            <td style="background-color: rgb(143, 34, 34); color: white;">12h-13h</td>
+            <td colspan="7" style="background-color: rgb(235, 155, 155);"></td>
+        </tr>
+        <tr>
+            <td>13h-14h</td>
+            <td rowspan="4">Giáo dục thể chất III</td>
+            <td rowspan="2">Thiết kế Web</td>
+            <td rowspan="5"></td>
+            <td rowspan="2">Cơ sở dữ liệu II</td>
+            <td rowspan="2">TH Lập trình HĐT</td>
+            <td rowspan="5"></td>
+            <td rowspan="5"></td>
+        </tr>
+        <tr>
+            <td>14h-15h</td>
+        </tr>
+        <tr>
+            <td>15h-16h</td>
+            <td rowspan="3"></td>
+            <td rowspan="3">Toán rời rạc</td>
+            <td rowspan="3">TH Thiết kế Web</td>
+        </tr>
+        <tr>
+            <td>16h-17h</td>
+        </tr>
+        <tr>
+            <td>17h-18h</td>
+            <td></td>
+        </tr>
+    </table>
+    <h2 id="taichinh">Tài chính</h2>
+    <p>Thông tin về tài chính sẽ được hiển thị ở đây.</p>
+    <form id="financeForm">
+    <label>Số tiền:</label>
+    <input type="number" id="amount" required>
+    <label>Loại:</label>
+    <select id="type">
+      <option value="in">Tiền vào</option>
+      <option value="out">Tiền ra</option>
+    </select>
+    <button type="submit">Thêm</button>
+  </form>
+
+  <div id="history"></div>
+  <div class="result">Số dư hiện tại: <span id="balance">0</span></div>
+
+  <script>
+    // Lấy dữ liệu từ LocalStorage khi mở trang
+    let balance = parseFloat(localStorage.getItem('balance')) || 0;
+    let history = JSON.parse(localStorage.getItem('history')) || [];
+
+    const form = document.getElementById('financeForm');
+    const historyDiv = document.getElementById('history');
+    const balanceSpan = document.getElementById('balance');
+
+    // Hiển thị dữ liệu đã lưu
+    balanceSpan.textContent = balance;
+    history.forEach(item => {
+      historyDiv.innerHTML += `<p>${item}</p>`;
+    });
+
+    form.addEventListener('submit', function(e) {
+      e.preventDefault();
+      const amount = parseFloat(document.getElementById('amount').value);
+      const type = document.getElementById('type').value;
+
+      let record;
+      if (type === 'in') {
+        balance += amount;
+        record = `+${amount} (Tiền vào)`;
+      } else {
+        balance -= amount;
+        record = `-${amount} (Tiền ra)`;
+      }
+
+      history.push(record);
+
+      // Lưu vào LocalStorage
+      localStorage.setItem('balance', balance);
+      localStorage.setItem('history', JSON.stringify(history));
+
+      // Cập nhật hiển thị
+      historyDiv.innerHTML += `<p>${record}</p>`;
+      balanceSpan.textContent = balance;
+
+      form.reset();
+    });
+  </script>
+    <h2 id="lienhe">Liên hệ</h2>
+    <p>SĐT: 0824645948</p>
+    <a href="mailto: phamvanvu141007@gmail.com">Email: phamvanvu141007@gmail.com</a>
+</html>
