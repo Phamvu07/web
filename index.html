@@ -102,56 +102,103 @@
     <p>Thông tin về tài chính sẽ được hiển thị ở đây.</p>
     <form id="financeForm">
     <label>Số tiền:</label>
-    <input type="number" id="amount" required>
-    <label>Loại:</label>
+    <input type="number" id="amount" required min="0" step="any">
+    
+    <label>Loại giao dịch:</label>
     <select id="type">
-      <option value="in">Tiền vào</option>
-      <option value="out">Tiền ra</option>
+      <option value="in">Tiền vào (Thu)</option>
+      <option value="out">Tiền ra (Chi)</option>
     </select>
+
+    <label>Nguồn tiền:</label>
+    <select id="source">
+      <option value="cash">Tiền mặt</option>
+      <option value="account">Tiền tài khoản</option>
+      <option value="savings">Tiền tiết kiệm</option>
+    </select>
+
     <button type="submit">Thêm</button>
   </form>
 
+  <hr>
+
+  <!-- Phần hiển thị số dư chi tiết từng ví và tổng -->
+  <div class="result">
+    <p>💵 Tiền mặt: <span id="balance-cash">0</span></p>
+    <p>💳 Tiền tài khoản: <span id="balance-account">0</span></p>
+    <p>💰 Tiền tiết kiệm: <span id="balance-savings">0</span></p>
+    <hr>
+    <p><strong>Tổng tiền: <span id="balance-total">0</span></strong></p>
+  </div>
+
+  <h3>Lịch sử giao dịch:</h3>
   <div id="history"></div>
-  <div class="result">Số dư hiện tại: <span id="balance">0</span></div>
 
   <script>
-    // Lấy dữ liệu từ LocalStorage khi mở trang
-    let balance = parseFloat(localStorage.getItem('balance')) || 0;
+    // 1. Lấy dữ liệu từ LocalStorage khi mở trang (hoặc khởi tạo mặc định bằng 0)
+    let balances = JSON.parse(localStorage.getItem('balances')) || {
+      cash: 0,
+      account: 0,
+      savings: 0
+    };
     let history = JSON.parse(localStorage.getItem('history')) || [];
 
     const form = document.getElementById('financeForm');
     const historyDiv = document.getElementById('history');
-    const balanceSpan = document.getElementById('balance');
+    
+    const spanCash = document.getElementById('balance-cash');
+    const spanAccount = document.getElementById('balance-account');
+    const spanSavings = document.getElementById('balance-savings');
+    const spanTotal = document.getElementById('balance-total');
 
-    // Hiển thị dữ liệu đã lưu
-    balanceSpan.textContent = balance;
+    // Hàm cập nhật giao diện hiển thị số dư
+    function updateDisplay() {
+      spanCash.textContent = balances.cash;
+      spanAccount.textContent = balances.account;
+      spanSavings.textContent = balances.savings;
+      
+      const total = balances.cash + balances.account + balances.savings;
+      spanTotal.textContent = total;
+    }
+
+    // Hiển thị dữ liệu đã lưu ban đầu
+    updateDisplay();
     history.forEach(item => {
       historyDiv.innerHTML += `<p>${item}</p>`;
     });
 
+    // Xử lý sự kiện khi submit form
     form.addEventListener('submit', function(e) {
       e.preventDefault();
       const amount = parseFloat(document.getElementById('amount').value);
       const type = document.getElementById('type').value;
+      const source = document.getElementById('source').value;
+
+      // Đặt tên tiếng Việt cho nguồn tiền hiển thị trong lịch sử
+      const sourceNames = {
+        cash: 'Tiền mặt',
+        account: 'Tài khoản',
+        savings: 'Tiết kiệm'
+      };
 
       let record;
       if (type === 'in') {
-        balance += amount;
-        record = `+${amount} (Tiền vào)`;
+        balances[source] += amount;
+        record = `+${amount} (${sourceNames[source]} - Tiền vào)`;
       } else {
-        balance -= amount;
-        record = `-${amount} (Tiền ra)`;
+        balances[source] -= amount;
+        record = `-${amount} (${sourceNames[source]} - Tiền ra)`;
       }
 
       history.push(record);
 
       // Lưu vào LocalStorage
-      localStorage.setItem('balance', balance);
+      localStorage.setItem('balances', JSON.stringify(balances));
       localStorage.setItem('history', JSON.stringify(history));
 
-      // Cập nhật hiển thị
+      // Cập nhật lại giao diện
+      updateDisplay();
       historyDiv.innerHTML += `<p>${record}</p>`;
-      balanceSpan.textContent = balance;
 
       form.reset();
     });
