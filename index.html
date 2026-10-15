@@ -131,11 +131,17 @@
     <p><strong>Tổng tiền: <span id="balance-total">0</span></strong></p>
   </div>
 
+  <hr>
+  <!-- Nút hỗ trợ đồng bộ dữ liệu thủ công giữa máy tính và điện thoại -->
+  <button id="exportBtn" style="background-color: #4CAF50; color: white; padding: 5px 10px; border: none; cursor: pointer;">📥 Tải file dữ liệu (Backup)</button>
+  <label for="importFile" style="background-color: #008CBA; color: white; padding: 5px 10px; cursor: pointer; display: inline-block; margin-left: 5px;">📤 Tải file dữ liệu lên (Sync)</label>
+  <input type="file" id="importFile" accept=".json" style="display: none;">
+
   <h3>Lịch sử giao dịch:</h3>
   <div id="history"></div>
 
   <script>
-    // 1. Lấy dữ liệu từ LocalStorage khi mở trang (hoặc khởi tạo mặc định bằng 0)
+    // 1. Lấy dữ liệu từ LocalStorage khi mở trang
     let balances = JSON.parse(localStorage.getItem('balances')) || {
       cash: 0,
       account: 0,
@@ -153,19 +159,24 @@
 
     // Hàm cập nhật giao diện hiển thị số dư
     function updateDisplay() {
-      spanCash.textContent = balances.cash;
-      spanAccount.textContent = balances.account;
-      spanSavings.textContent = balances.savings;
+      spanCash.textContent = balances.cash.toLocaleString();
+      spanAccount.textContent = balances.account.toLocaleString();
+      spanSavings.textContent = balances.savings.toLocaleString();
       
       const total = balances.cash + balances.account + balances.savings;
-      spanTotal.textContent = total;
+      spanTotal.textContent = total.toLocaleString();
     }
 
     // Hiển thị dữ liệu đã lưu ban đầu
+    function renderHistory() {
+      historyDiv.innerHTML = '';
+      history.forEach(item => {
+        historyDiv.innerHTML += `<p style="border-bottom: 1px solid #eee; padding-bottom: 5px;">${item}</p>`;
+      });
+    }
+
     updateDisplay();
-    history.forEach(item => {
-      historyDiv.innerHTML += `<p>${item}</p>`;
-    });
+    renderHistory();
 
     // Xử lý sự kiện khi submit form
     form.addEventListener('submit', function(e) {
@@ -174,23 +185,26 @@
       const type = document.getElementById('type').value;
       const source = document.getElementById('source').value;
 
-      // Đặt tên tiếng Việt cho nguồn tiền hiển thị trong lịch sử
       const sourceNames = {
         cash: 'Tiền mặt',
         account: 'Tài khoản',
         savings: 'Tiết kiệm'
       };
 
+      // Lấy ngày giờ hiện tại theo định dạng Việt Nam
+      const now = new Date();
+      const timeString = now.toLocaleDateString('vi-VN') + ' ' + now.toLocaleTimeString('vi-VN', { hour: '2-digit', minute: '2-digit' });
+
       let record;
       if (type === 'in') {
         balances[source] += amount;
-        record = `+${amount} (${sourceNames[source]} - Tiền vào)`;
+        record = `[${timeString}] <b style="color: green;">+${amount.toLocaleString()}</b> (${sourceNames[source]} - Tiền vào)`;
       } else {
         balances[source] -= amount;
-        record = `-${amount} (${sourceNames[source]} - Tiền ra)`;
+        record = `[${timeString}] <b style="color: red;">-${amount.toLocaleString()}</b> (${sourceNames[source]} - Tiền ra)`;
       }
 
-      history.push(record);
+      history.unshift(record); // Đưa giao dịch mới nhất lên trên cùng
 
       // Lưu vào LocalStorage
       localStorage.setItem('balances', JSON.stringify(balances));
@@ -198,9 +212,54 @@
 
       // Cập nhật lại giao diện
       updateDisplay();
-      historyDiv.innerHTML += `<p>${record}</p>`;
+      renderHistory();
 
       form.reset();
+    });
+
+    // --- TÍNH NĂNG ĐỒNG BỘ THỦ CÔNG (Giữa máy tính và điện thoại) ---
+    
+    // 1. Tải file dữ liệu về máy (Backup)
+    document.getElementById('exportBtn').addEventListener('click', function() {
+      const dataToExport = { balances, history };
+      const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(dataToExport, null, 2));
+      const downloadAnchor = document.createElement('a');
+      downloadAnchor.setAttribute("href", dataStr);
+      downloadAnchor.setAttribute("download", "finance_backup.json");
+      document.body.appendChild(downloadAnchor);
+      downloadAnchor.click();
+      downloadAnchor.remove();
+    });
+
+    // 2. Nhập file dữ liệu lên thiết bị khác (Sync)
+    document.getElementById('importFile').addEventListener('change', function(e) {
+      const file = e.target.files[0];
+      if (!file) return;
+
+      const reader = new FileReader();
+      reader.onload = function(e) {
+        try {
+          const importedData = JSON.parse(e.target.result);
+          if (importedData.balances && importedData.history) {
+            balances = importedData.balances;
+            history = importedData.history;
+
+            // Lưu vào LocalStorage của thiết bị hiện tại
+            localStorage.setItem('balances', JSON.stringify(balances));
+            localStorage.setItem('history', JSON.stringify(history));
+
+            // Cập nhật lại giao diện
+            updateDisplay();
+            renderHistory();
+            alert("Đồng bộ dữ liệu thành công!");
+          } else {
+            alert("File không hợp lệ!");
+          }
+        } catch (err) {
+          alert("Lỗi đọc file!");
+        }
+      };
+      reader.readAsText(file);
     });
   </script>
     <h2 id="lienhe">Liên hệ</h2>
