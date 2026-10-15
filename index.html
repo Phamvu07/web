@@ -131,23 +131,27 @@
     <p><strong>Tổng tiền: <span id="balance-total">0</span></strong></p>
   </div>
 
-  <hr>
-  <!-- Nút hỗ trợ đồng bộ dữ liệu thủ công giữa máy tính và điện thoại -->
-  <button id="exportBtn" style="background-color: #4CAF50; color: white; padding: 5px 10px; border: none; cursor: pointer;">📥 Tải file dữ liệu (Backup)</button>
-  <label for="importFile" style="background-color: #008CBA; color: white; padding: 5px 10px; cursor: pointer; display: inline-block; margin-left: 5px;">📤 Tải file dữ liệu lên (Sync)</label>
-  <input type="file" id="importFile" accept=".json" style="display: none;">
-
   <h3>Lịch sử giao dịch:</h3>
   <div id="history"></div>
 
-  <script>
-    // 1. Lấy dữ liệu từ LocalStorage khi mở trang
-    let balances = JSON.parse(localStorage.getItem('balances')) || {
-      cash: 0,
-      account: 0,
-      savings: 0
+  <!-- Nhúng thư viện Firebase từ Google CDN -->
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
+    import { getFirestore, doc, getDoc, setDoc, onSnapshot } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
+
+    // 👉 THAY THẾ THÔNG TIN FIREBASE CỦA BẠN VÀO ĐÂY
+    const firebaseConfig = {
+      apiKey: "YOUR_API_KEY",
+      authDomain: "YOUR_AUTH_DOMAIN",
+      projectId: "YOUR_PROJECT_ID",
+      storageBucket: "YOUR_STORAGE_BUCKET",
+      messagingSenderId: "YOUR_MESSAGING_SENDER_ID",
+      appId: "YOUR_APP_ID"
     };
-    let history = JSON.parse(localStorage.getItem('history')) || [];
+
+    // Khởi tạo Firebase
+    const app = initializeApp(firebaseConfig);
+    const db = getFirestore(app);
 
     const form = document.getElementById('financeForm');
     const historyDiv = document.getElementById('history');
@@ -157,29 +161,40 @@
     const spanSavings = document.getElementById('balance-savings');
     const spanTotal = document.getElementById('balance-total');
 
-    // Hàm cập nhật giao diện hiển thị số dư
-    function updateDisplay() {
-      spanCash.textContent = balances.cash.toLocaleString();
-      spanAccount.textContent = balances.account.toLocaleString();
-      spanSavings.textContent = balances.savings.toLocaleString();
-      
-      const total = balances.cash + balances.account + balances.savings;
-      spanTotal.textContent = total.toLocaleString();
-    }
+    let currentData = {
+      balances: { cash: 0, account: 0, savings: 0 },
+      history: []
+    };
 
-    // Hiển thị dữ liệu đã lưu ban đầu
-    function renderHistory() {
+    // Hàm cập nhật giao diện hiển thị
+    function updateUI(data) {
+      spanCash.textContent = data.balances.cash.toLocaleString();
+      spanAccount.textContent = data.balances.account.toLocaleString();
+      spanSavings.textContent = data.balances.savings.toLocaleString();
+      
+      const total = data.balances.cash + data.balances.account + data.balances.savings;
+      spanTotal.textContent = total.toLocaleString();
+
       historyDiv.innerHTML = '';
-      history.forEach(item => {
+      data.history.forEach(item => {
         historyDiv.innerHTML += `<p style="border-bottom: 1px solid #eee; padding-bottom: 5px;">${item}</p>`;
       });
     }
 
-    updateDisplay();
-    renderHistory();
+    // Lắng nghe dữ liệu realtime từ Firebase (Máy tính hoặc điện thoại thay đổi là thiết bị kia cập nhật ngay lập tức)
+    const docRef = doc(db, "finances", "data");
+    onSnapshot(docRef, (docSnap) => {
+      if (docSnap.exists()) {
+        currentData = docSnap.data();
+        updateUI(currentData);
+      } else {
+        // Nếu dữ liệu trên mây chưa có, tạo mặc định
+        setDoc(docRef, currentData);
+      }
+    });
 
     // Xử lý sự kiện khi submit form
-    form.addEventListener('submit', function(e) {
+    form.addEventListener('submit', async function(e) {
       e.preventDefault();
       const amount = parseFloat(document.getElementById('amount').value);
       const type = document.getElementById('type').value;
@@ -191,75 +206,28 @@
         savings: 'Tiết kiệm'
       };
 
-      // Lấy ngày giờ hiện tại theo định dạng Việt Nam
       const now = new Date();
       const timeString = now.toLocaleDateString('vi-VN') + ' ' + now.toLocaleTimeString('vi-VN', { hour: '2-digit', minute: '2-digit' });
 
       let record;
       if (type === 'in') {
-        balances[source] += amount;
+        currentData.balances[source] += amount;
         record = `[${timeString}] <b style="color: green;">+${amount.toLocaleString()}</b> (${sourceNames[source]} - Tiền vào)`;
       } else {
-        balances[source] -= amount;
+        currentData.balances[source] -= amount;
         record = `[${timeString}] <b style="color: red;">-${amount.toLocaleString()}</b> (${sourceNames[source]} - Tiền ra)`;
       }
 
-      history.unshift(record); // Đưa giao dịch mới nhất lên trên cùng
+      currentData.history.unshift(record);
 
-      // Lưu vào LocalStorage
-      localStorage.setItem('balances', JSON.stringify(balances));
-      localStorage.setItem('history', JSON.stringify(history));
-
-      // Cập nhật lại giao diện
-      updateDisplay();
-      renderHistory();
-
-      form.reset();
-    });
-
-    // --- TÍNH NĂNG ĐỒNG BỘ THỦ CÔNG (Giữa máy tính và điện thoại) ---
-    
-    // 1. Tải file dữ liệu về máy (Backup)
-    document.getElementById('exportBtn').addEventListener('click', function() {
-      const dataToExport = { balances, history };
-      const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(dataToExport, null, 2));
-      const downloadAnchor = document.createElement('a');
-      downloadAnchor.setAttribute("href", dataStr);
-      downloadAnchor.setAttribute("download", "finance_backup.json");
-      document.body.appendChild(downloadAnchor);
-      downloadAnchor.click();
-      downloadAnchor.remove();
-    });
-
-    // 2. Nhập file dữ liệu lên thiết bị khác (Sync)
-    document.getElementById('importFile').addEventListener('change', function(e) {
-      const file = e.target.files[0];
-      if (!file) return;
-
-      const reader = new FileReader();
-      reader.onload = function(e) {
-        try {
-          const importedData = JSON.parse(e.target.result);
-          if (importedData.balances && importedData.history) {
-            balances = importedData.balances;
-            history = importedData.history;
-
-            // Lưu vào LocalStorage của thiết bị hiện tại
-            localStorage.setItem('balances', JSON.stringify(balances));
-            localStorage.setItem('history', JSON.stringify(history));
-
-            // Cập nhật lại giao diện
-            updateDisplay();
-            renderHistory();
-            alert("Đồng bộ dữ liệu thành công!");
-          } else {
-            alert("File không hợp lệ!");
-          }
-        } catch (err) {
-          alert("Lỗi đọc file!");
-        }
-      };
-      reader.readAsText(file);
+      // Lưu đè lên Firebase đám mây -> Tự động đồng bộ sang tất cả thiết bị đang mở web
+      try {
+        await setDoc(docRef, currentData);
+        form.reset();
+      } catch (error) {
+        alert("Lỗi khi lưu dữ liệu lên hệ thống!");
+        console.error(error);
+      }
     });
   </script>
     <h2 id="lienhe">Liên hệ</h2>
