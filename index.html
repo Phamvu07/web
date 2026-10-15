@@ -132,8 +132,11 @@
     <p><strong>Tổng tiền: <span id="balance-total">0</span></strong></p>
   </div>
 
-  <h3>Lịch sử giao dịch:</h3>
-  <div id="history"></div>
+  <div class="history-header">
+      <h3>Lịch sử giao dịch gần đây:</h3>
+      <a href="lichsu.html" class="btn-all-history">Tất cả giao dịch</a>
+  </div>
+  <div id="history" style="margin-top: 10px;"></div>
 
   <!-- Nhúng thư viện Firebase từ Google CDN -->
   <script type="module">
@@ -176,9 +179,11 @@
       const total = data.balances.cash + data.balances.account + data.balances.savings;
       spanTotal.textContent = total.toLocaleString();
 
+     // Chỉ hiển thị đúng 10 giao dịch gần nhất
       historyDiv.innerHTML = '';
-      data.history.forEach(item => {
-        historyDiv.innerHTML += `<p style="border-bottom: 1px solid #eee; padding-bottom: 5px;">${item}</p>`;
+      const historyArr = data.history || [];
+      historyArr.slice(0, 10).forEach(item => {
+        historyDiv.innerHTML += `<p class="history-item">${item}</p>`;
       });
     }
 

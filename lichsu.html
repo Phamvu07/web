@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="Dinhdangdemo.css">
+    <title>Tất cả lịch sử giao dịch</title>
+</head>
+<body style="padding: 20px; max-width: 800px; margin: auto;">
+    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
+        <h2>📜 Toàn bộ lịch sử giao dịch</h2>
+        <a href="webdemo.html" style="background-color: #64748b; color: white; padding: 8px 14px; border-radius: 4px; text-decoration: none; font-size: 14px;">Quay lại trang chủ</a>
+    </div>
+
+    <!-- Bảng hiển thị đầy đủ thông tin giao dịch -->
+    <div id="full-history-container">
+        <p>Đang tải dữ liệu từ hệ thống...</p>
+    </div>
+
+    <!-- Script kết nối Firebase để lấy danh sách đầy đủ -->
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
+        import { getFirestore, doc, getDoc } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
+
+        const firebaseConfig = {
+          apiKey: "AIzaSyBjEgSWjNFH2UvYkV4qQWb-oEDJ1RSoahI",
+          authDomain: "quanlytien-25a9a.firebaseapp.com",
+          projectId: "quanlytien-25a9a",
+          storageBucket: "quanlytien-25a9a.firebasestorage.app",
+          messagingSenderId: "1031835235629",
+          appId: "1:1031835235629:web:b7ef833c98a8e2d4294fa4",
+        };
+
+        const app = initializeApp(firebaseConfig);
+        const db = getFirestore(app);
+
+        const container = document.getElementById('full-history-container');
+
+        async function loadFullHistory() {
+            try {
+                const docRef = doc(db, "finances", "data");
+                const docSnap = await getDoc(docRef);
+
+                if (docSnap.exists()) {
+                    const data = docSnap.data();
+                    const historyArr = data.history || [];
+
+                    if (historyArr.length === 0) {
+                        container.innerHTML = '<p>Chưa có giao dịch nào được ghi nhận.</p>';
+                        return;
+                    }
+
+                    let html = '<div style="background: white; border: 1px solid #e2e8f0; border-radius: 8px; padding: 15px; box-shadow: 0 4px 6px rgba(0,0,0,0.05);">';
+                    historyArr.forEach((item, index) => {
+                        html += `<p style="border-bottom: 1px solid #f1f5f9; padding-bottom: 8px; margin-bottom: 8px; font-size: 14px;">
+                                    <b>#${index + 1}</b> - ${item}
+                                 </p>`;
+                    });
+                    html += '</div>';
+                    container.innerHTML = html;
+                } else {
+                    container.innerHTML = '<p>Không tìm thấy dữ liệu.</p>';
+                }
+            } catch (error) {
+                container.innerHTML = '<p style="color: red;">Lỗi khi tải dữ liệu từ hệ thống!</p>';
+                console.error(error);
+            }
+        }
+
+        loadFullHistory();
+    </script>
+</body>
+</html>
