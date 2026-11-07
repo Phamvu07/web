@@ -1,23 +1,28 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="vi">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="stylesheet" href="Dinhdang.css">
-    <title>Tất cả lịch sử giao dịch</title>
+    <title>Toàn bộ lịch sử giao dịch</title>
 </head>
-<body style="padding: 20px; max-width: 800px; margin: auto;">
-    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
-        <h2>📜 Toàn bộ lịch sử giao dịch</h2>
-        <a href="index.html" style="background-color: #64748b; color: white; padding: 8px 14px; border-radius: 4px; text-decoration: none; font-size: 14px;">Quay lại trang chủ</a>
+<body style="padding: 20px 0;">
+
+    <div class="container">
+        <div class="history-header" style="margin-bottom: 25px;">
+            <h2><i class="fa-solid fa-receipt"></i> Toàn Bộ Lịch Sử Giao Dịch</h2>
+            <a href="index.html" class="btn-submit" style="width: auto; margin-top: 0; padding: 8px 18px;">
+                <i class="fa-solid fa-arrow-left"></i> Quay lại Dashboard
+            </a>
+        </div>
+
+        <div id="full-history-container" class="section-card">
+            <p style="color: var(--text-muted);">Đang tải dữ liệu từ Cloud Firebase...</p>
+        </div>
     </div>
 
-    <!-- Bảng hiển thị đầy đủ thông tin giao dịch -->
-    <div id="full-history-container">
-        <p>Đang tải dữ liệu từ hệ thống...</p>
-    </div>
-
-    <!-- Script kết nối Firebase để lấy danh sách đầy đủ -->
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
         import { getFirestore, doc, getDoc } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
@@ -46,23 +51,23 @@
                     const historyArr = data.history || [];
 
                     if (historyArr.length === 0) {
-                        container.innerHTML = '<p>Chưa có giao dịch nào được ghi nhận.</p>';
+                        container.innerHTML = '<p style="color: var(--text-muted);">Chưa có giao dịch nào được ghi nhận.</p>';
                         return;
                     }
 
-                    let html = '<div style="background: white; border: 1px solid #e2e8f0; border-radius: 8px; padding: 15px; box-shadow: 0 4px 6px rgba(0,0,0,0.05);">';
+                    let html = '<div class="history-list">';
                     historyArr.forEach((item, index) => {
-                        html += `<p style="border-bottom: 1px solid #f1f5f9; padding-bottom: 8px; margin-bottom: 8px; font-size: 14px;">
-                                    <b>#${index + 1}</b> - ${item}
-                                 </p>`;
+                        html += `<div class="history-item">
+                                    <span><b>#${index + 1}</b> &nbsp; ${item}</span>
+                                 </div>`;
                     });
                     html += '</div>';
                     container.innerHTML = html;
                 } else {
-                    container.innerHTML = '<p>Không tìm thấy dữ liệu.</p>';
+                    container.innerHTML = '<p style="color: var(--text-muted);">Không tìm thấy dữ liệu.</p>';
                 }
             } catch (error) {
-                container.innerHTML = '<p style="color: red;">Lỗi khi tải dữ liệu từ hệ thống!</p>';
+                container.innerHTML = '<p style="color: #f87171;">Lỗi khi tải dữ liệu từ hệ thống!</p>';
                 console.error(error);
             }
         }

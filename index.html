@@ -1,245 +1,317 @@
 <!DOCTYPE html>
-<html lang="en">
-    <head>
-        <meta charset="UTF-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <link rel="stylesheet" href="Dinhdang.css">
-        <title>web.com</title>
-    </head>
-    <body>
-        <h1 id="home" class="home">WEB SITE QUẢN LÝ CÁ NHÂN</h1>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Trang Quản Lý Cá Nhân - Phạm Văn Vũ</title>
+    <!-- Google Fonts & FontAwesome Icons -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="Dinhdang.css">
+</head>
+<body>
+
+    <!-- NAV HEADER BAR -->
+    <header class="main-header">
+        <div class="logo">
+            <i class="fa-solid fa-shapes"></i> <span>PVV</span>.DASHBOARD
+        </div>
         <nav>
             <ul>
-                <li onclick="location.href=this.querySelector('a').getAttribute('href')"><a href="#home">Home</a></li>
-                <li onclick="location.href=this.querySelector('a').getAttribute('href')"><a href="#lichhoc">Lịch học</a></li>
-                <li onclick="location.href=this.querySelector('a').getAttribute('href')"><a href="#taichinh">Tài chính</a></li>
-                <li onclick="location.href=this.querySelector('a').getAttribute('href')"><a href="#lienhe">Liên hệ</a></li>
+                <li><a href="#home"><i class="fa-solid fa-house"></i> Home</a></li>
+                <li><a href="#lichhoc"><i class="fa-solid fa-calendar-days"></i> Lịch học</a></li>
+                <li><a href="#taichinh"><i class="fa-solid fa-wallet"></i> Tài chính</a></li>
+                <li><a href="#lienhe"><i class="fa-solid fa-address-book"></i> Liên hệ</a></li>
             </ul>
         </nav>
-    <h2>HOME</h2>
-    <p>
-        Chào mừng bạn đến với trang web cá nhân của tôi!, 
-        tôi là một người yêu công nghệ và thích học hỏi những điều mới mẻ.<br>
-        Đây là nơi quản lý lịch trình của tôi.<br>
-        Sắp xếp thời gian học tập và các hoạt động khác một cách hiệu quả là điều quan trọng để đạt được thành công trong học tập và cuộc sống.<br>
-        Tôi hy vọng trang web này sẽ giúp tôi quản lý thời gian của mình một cách tốt hơn và đạt được những mục tiêu mà tôi đã đặt ra.<br>
-    </p>
-    </body>
-    <h2 id="lichhoc">Lịch học</h2>
-    <p>Thông tin về lịch học sẽ được hiển thị ở đây.</p>
-    <table border="1" id="tkb">
-        <tr>
-            <th></th>
-            <th>T2</th>
-            <th>T3</th>
-            <th>T4</th>
-            <th>T5</th>
-            <th>T6</th>
-            <th>T7</th>
-            <th>CN</th>
-        </tr>
-        <tr>
-            <td>7h-8h</td>
-            <td rowspan="2"></td>
-            <td rowspan="2">Đồ họa máy tính</td>
-            <td></td>
-            <td rowspan="2">Chủ nghĩa xã hội khoa học</td>
-            <td rowspan="2">TH Cơ sở dữ liệu II</td>
-            <td rowspan="2"></td>
-            <td rowspan="5"></td>
-        </tr>
-        <tr>
-            <td>8h-9h</td>
-            <td rowspan="4">Lập trình hướng đối tượng</td>
-        </tr>
-        <tr>
-            <td>9h-10h</td>
-            <td rowspan="3">Tiếng Anh A2.1</td>
-            <td rowspan="3"></td>
-            <td rowspan="3"></td>
-            <td rowspan="3">TH Lập trình HĐT</td>
-            <td rowspan="2">Kỹ năng làm việc nhóm</td>
-        </tr>
-        <tr>
-            <td>10h-11h</td>
-        </tr>
-        <tr>
-            <td>11h-12h</td>
-            <td></td>
-        </tr>
-        <tr>
-            <td style="background-color: rgb(143, 34, 34); color: white;">12h-13h</td>
-            <td colspan="7" style="background-color: rgb(235, 155, 155);"></td>
-        </tr>
-        <tr>
-            <td>13h-14h</td>
-            <td rowspan="4">Giáo dục thể chất III</td>
-            <td rowspan="2">Thiết kế Web</td>
-            <td rowspan="5"></td>
-            <td rowspan="2">Cơ sở dữ liệu II</td>
-            <td rowspan="2"></td>
-            <td rowspan="5"></td>
-            <td rowspan="5"></td>
-        </tr>
-        <tr>
-            <td>14h-15h</td>
-        </tr>
-        <tr>
-            <td>15h-16h</td>
-            <td rowspan="3"></td>
-            <td rowspan="3">Toán rời rạc</td>
-            <td rowspan="3">TH Thiết kế Web</td>
-        </tr>
-        <tr>
-            <td>16h-17h</td>
-        </tr>
-        <tr>
-            <td>17h-18h</td>
-            <td></td>
-        </tr>
-    </table>
-    <br>
-    <h2 id="taichinh">Tài chính</h2>
-    <p>Thông tin về tài chính sẽ được hiển thị ở đây.</p>
-    <form id="financeForm">
-    <label>Số tiền:</label>
-    <input type="number" id="amount" required min="0" step="any">
-    
-    <label>Loại giao dịch:</label>
-    <select id="type">
-      <option value="in">Tiền vào (Thu)</option>
-      <option value="out">Tiền ra (Chi)</option>
-    </select>
+    </header>
 
-    <label>Nguồn tiền:</label>
-    <select id="source">
-      <option value="cash">Tiền mặt</option>
-      <option value="account">Tiền tài khoản</option>
-      <option value="savings">Tiền tiết kiệm</option>
-    </select>
+    <main class="container">
+        <!-- TRANG CHỦ HERO CARD -->
+        <section id="home" class="hero-card">
+            <span class="badge">Xin chào 👋</span>
+            <h1>WEB SITE QUẢN LÝ CÁ NHÂN</h1>
+            <p>
+                Chào mừng bạn đến với trang web cá nhân của tôi! Đây là nơi giúp tôi quản lý lịch trình học tập, 
+                sắp xếp thời gian và theo dõi tài chính cá nhân một cách thông minh, hiệu quả.
+            </p>
+        </section>
 
-    <button type="submit">Thêm</button>
-  </form>
+        <!-- LỊCH HỌC SECTION -->
+        <section id="lichhoc" class="section-card">
+            <div class="section-header">
+                <h2><i class="fa-solid fa-graduation-cap"></i> Lịch Học Hàng Tuần</h2>
+                <p class="section-sub">Thời khóa biểu chi tiết các môn học trong tuần</p>
+            </div>
+            
+            <div class="table-responsive">
+                <table id="tkb">
+                    <thead>
+                        <tr>
+                            <th>Khung giờ</th>
+                            <th>T2</th>
+                            <th>T3</th>
+                            <th>T4</th>
+                            <th>T5</th>
+                            <th>T6</th>
+                            <th>T7</th>
+                            <th>CN</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td class="time-col">7h - 8h</td>
+                            <td rowspan="2" class="subject-tag tag-blue">Đồ họa máy tính</td>
+                            <td rowspan="4" class="subject-tag tag-purple">Lập trình hướng đối tượng</td>
+                            <td rowspan="2"></td>
+                            <td rowspan="2" class="subject-tag tag-amber">Chủ nghĩa xã hội KH</td>
+                            <td rowspan="2" class="subject-tag tag-emerald">TH Cơ sở dữ liệu II</td>
+                            <td rowspan="2"></td>
+                            <td rowspan="5" class="off-day">Nghỉ</td>
+                        </tr>
+                        <tr>
+                            <td class="time-col">8h - 9h</td>
+                        </tr>
+                        <tr>
+                            <td class="time-col">9h - 10h</td>
+                            <td rowspan="3" class="subject-tag tag-rose">Tiếng Anh A2.1</td>
+                            <td rowspan="3"></td>
+                            <td rowspan="3"></td>
+                            <td rowspan="3" class="subject-tag tag-purple">TH Lập trình HĐT</td>
+                            <td rowspan="2" class="subject-tag tag-cyan">Kỹ năng làm việc nhóm</td>
+                        </tr>
+                        <tr>
+                            <td class="time-col">10h - 11h</td>
+                        </tr>
+                        <tr>
+                            <td class="time-col">11h - 12h</td>
+                            <td></td>
+                        </tr>
+                        <tr class="break-row">
+                            <td class="time-col">12h - 13h</td>
+                            <td colspan="7">☕ Nghỉ trưa</td>
+                        </tr>
+                        <tr>
+                            <td class="time-col">13h - 14h</td>
+                            <td rowspan="4" class="subject-tag tag-orange">Giáo dục thể chất III</td>
+                            <td rowspan="2" class="subject-tag tag-indigo">Thiết kế Web</td>
+                            <td rowspan="5"></td>
+                            <td rowspan="2" class="subject-tag tag-emerald">Cơ sở dữ liệu II</td>
+                            <td rowspan="2"></td>
+                            <td rowspan="5"></td>
+                            <td rowspan="5" class="off-day">Nghỉ</td>
+                        </tr>
+                        <tr>
+                            <td class="time-col">14h - 15h</td>
+                        </tr>
+                        <tr>
+                            <td class="time-col">15h - 16h</td>
+                            <td rowspan="3"></td>
+                            <td rowspan="3" class="subject-tag tag-teal">Toán rời rạc</td>
+                            <td rowspan="3" class="subject-tag tag-indigo">TH Thiết kế Web</td>
+                        </tr>
+                        <tr>
+                            <td class="time-col">16h - 17h</td>
+                        </tr>
+                        <tr>
+                            <td class="time-col">17h - 18h</td>
+                            <td></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </section>
 
-  <hr>
+        <!-- TÀI CHÍNH SECTION -->
+        <section id="taichinh" class="section-card">
+            <div class="section-header">
+                <h2><i class="fa-solid fa-coins"></i> Quản Lý Tài Chính</h2>
+                <p class="section-sub">Đồng bộ dữ liệu thời gian thực qua Cloud Firebase</p>
+            </div>
 
-  <!-- Phần hiển thị số dư chi tiết từng ví và tổng -->
-  <div class="result">
-    <p>💵 Tiền mặt: <span id="balance-cash">0</span></p>
-    <p>💳 Tiền tài khoản: <span id="balance-account">0</span></p>
-    <p>💰 Tiền tiết kiệm: <span id="balance-savings">0</span></p>
-    <hr>
-    <p><strong>Tổng tiền: <span id="balance-total">0</span></strong></p>
-  </div>
+            <!-- CARDS THỐNG KÊ SỐ DƯ -->
+            <div class="finance-grid">
+                <div class="stat-card card-cash">
+                    <div class="stat-icon"><i class="fa-solid fa-money-bill-wave"></i></div>
+                    <div class="stat-info">
+                        <span>Tiền mặt</span>
+                        <h3 id="balance-cash">0 <span>đ</span></h3>
+                    </div>
+                </div>
+                <div class="stat-card card-account">
+                    <div class="stat-icon"><i class="fa-solid fa-credit-card"></i></div>
+                    <div class="stat-info">
+                        <span>Tài khoản</span>
+                        <h3 id="balance-account">0 <span>đ</span></h3>
+                    </div>
+                </div>
+                <div class="stat-card card-savings">
+                    <div class="stat-icon"><i class="fa-solid fa-piggy-bank"></i></div>
+                    <div class="stat-info">
+                        <span>Tiết kiệm</span>
+                        <h3 id="balance-savings">0 <span>đ</span></h3>
+                    </div>
+                </div>
+                <div class="stat-card card-total">
+                    <div class="stat-icon"><i class="fa-solid fa-sack-dollar"></i></div>
+                    <div class="stat-info">
+                        <span>TỔNG SỐ DƯ</span>
+                        <h3 id="balance-total">0 <span>đ</span></h3>
+                    </div>
+                </div>
+            </div>
 
-  <div class="history-header">
-      <h3>Lịch sử giao dịch gần đây:</h3>
-      <a href="lichsu.html" class="btn-all-history">Tất cả giao dịch</a>
-  </div>
-  <div id="history" style="margin-top: 10px;"></div>
+            <!-- FORM NHẬP GIAO DỊCH -->
+            <form id="financeForm" class="styled-form">
+                <div class="form-grid">
+                    <div class="input-group">
+                        <label for="amount">Số tiền (VNĐ)</label>
+                        <input type="number" id="amount" placeholder="Nhập số tiền..." required min="0" step="any">
+                    </div>
+                    <div class="input-group">
+                        <label for="type">Loại giao dịch</label>
+                        <select id="type">
+                            <option value="in">📈 Tiền vào (Thu)</option>
+                            <option value="out">📉 Tiền ra (Chi)</option>
+                        </select>
+                    </div>
+                    <div class="input-group">
+                        <label for="source">Ví tiền</label>
+                        <select id="source">
+                            <option value="cash">💵 Tiền mặt</option>
+                            <option value="account">💳 Tiền tài khoản</option>
+                            <option value="savings">💰 Tiền tiết kiệm</option>
+                        </select>
+                    </div>
+                </div>
+                <button type="submit" class="btn-submit"><i class="fa-solid fa-plus"></i> Thêm Giao Dịch</button>
+            </form>
 
-  <!-- LIÊN HỆ -->
-  <div id="lienhe" class="section-card">
-    <h2>Liên hệ</h2>
-    <p>📞 SĐT: <strong>0824645948</strong></p>
-    <p>✉️ Email: <a href="mailto:phamvanvu141007@gmail.com" style="color: #2563eb;">phamvanvu141007@gmail.com</a></p>
-  </div>
-  <!-- Nhúng thư viện Firebase từ Google CDN -->
-  <script type="module">
-    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
-    import { getFirestore, doc, getDoc, setDoc, onSnapshot } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
+            <!-- LỊCH SỬ GIAO DỊCH GẦN ĐÂY -->
+            <div class="history-wrapper">
+                <div class="history-header">
+                    <h3><i class="fa-solid fa-clock-rotate-left"></i> Giao dịch gần đây</h3>
+                    <a href="lichsu.html" class="btn-all-history">Tất cả giao dịch <i class="fa-solid fa-arrow-right"></i></a>
+                </div>
+                <div id="history" class="history-list"></div>
+            </div>
+        </section>
 
-    // 👉 THAY THẾ THÔNG TIN FIREBASE CỦA BẠN VÀO ĐÂY
-    const firebaseConfig = {
-      apiKey: "AIzaSyBjEgSWjNFH2UvYkV4qQWb-oEDJ1RSoahI",
-      authDomain: "quanlytien-25a9a.firebaseapp.com",
-      projectId: "quanlytien-25a9a",
-      storageBucket: "quanlytien-25a9a.firebasestorage.app",
-      messagingSenderId: "1031835235629",
-      appId: "1:1031835235629:web:b7ef833c98a8e2d4294fa4",
-    };
+        <!-- LIÊN HỆ SECTION -->
+        <section id="lienhe" class="section-card contact-card">
+            <h2><i class="fa-solid fa-paper-plane"></i> Thông Tin Liên Hệ</h2>
+            <div class="contact-grid">
+                <div class="contact-box">
+                    <i class="fa-solid fa-phone"></i>
+                    <div>
+                        <span>Điện thoại</span>
+                        <strong>0824 645 948</strong>
+                    </div>
+                </div>
+                <div class="contact-box">
+                    <i class="fa-solid fa-envelope"></i>
+                    <div>
+                        <span>Email</span>
+                        <a href="mailto:phamvanvu141007@gmail.com">phamvanvu141007@gmail.com</a>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
 
-    // Khởi tạo Firebase
-    const app = initializeApp(firebaseConfig);
-    const db = getFirestore(app);
+    <footer>
+        <p>&copy; 2026 Phạm Văn Vũ. Personal Management System.</p>
+    </footer>
 
-    const form = document.getElementById('financeForm');
-    const historyDiv = document.getElementById('history');
-    
-    const spanCash = document.getElementById('balance-cash');
-    const spanAccount = document.getElementById('balance-account');
-    const spanSavings = document.getElementById('balance-savings');
-    const spanTotal = document.getElementById('balance-total');
+    <!-- FIREBASE MODULE -->
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
+        import { getFirestore, doc, setDoc, onSnapshot } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
 
-    let currentData = {
-      balances: { cash: 0, account: 0, savings: 0 },
-      history: []
-    };
+        const firebaseConfig = {
+          apiKey: "AIzaSyBjEgSWjNFH2UvYkV4qQWb-oEDJ1RSoahI",
+          authDomain: "quanlytien-25a9a.firebaseapp.com",
+          projectId: "quanlytien-25a9a",
+          storageBucket: "quanlytien-25a9a.firebasestorage.app",
+          messagingSenderId: "1031835235629",
+          appId: "1:1031835235629:web:b7ef833c98a8e2d4294fa4",
+        };
 
-    // Hàm cập nhật giao diện hiển thị
-    function updateUI(data) {
-      spanCash.textContent = data.balances.cash.toLocaleString();
-      spanAccount.textContent = data.balances.account.toLocaleString();
-      spanSavings.textContent = data.balances.savings.toLocaleString();
-      
-      const total = data.balances.cash + data.balances.account + data.balances.savings;
-      spanTotal.textContent = total.toLocaleString();
+        const app = initializeApp(firebaseConfig);
+        const db = getFirestore(app);
 
-     // Chỉ hiển thị đúng 10 giao dịch gần nhất
-      historyDiv.innerHTML = '';
-      const historyArr = data.history || [];
-      historyArr.slice(0, 10).forEach(item => {
-        historyDiv.innerHTML += `<p class="history-item">${item}</p>`;
-      });
-    }
+        const form = document.getElementById('financeForm');
+        const historyDiv = document.getElementById('history');
+        
+        const spanCash = document.getElementById('balance-cash');
+        const spanAccount = document.getElementById('balance-account');
+        const spanSavings = document.getElementById('balance-savings');
+        const spanTotal = document.getElementById('balance-total');
 
-    // Lắng nghe dữ liệu realtime từ Firebase (Máy tính hoặc điện thoại thay đổi là thiết bị kia cập nhật ngay lập tức)
-    const docRef = doc(db, "finances", "data");
-    onSnapshot(docRef, (docSnap) => {
-      if (docSnap.exists()) {
-        currentData = docSnap.data();
-        updateUI(currentData);
-      } else {
-        // Nếu dữ liệu trên mây chưa có, tạo mặc định
-        setDoc(docRef, currentData);
-      }
-    });
+        let currentData = {
+          balances: { cash: 0, account: 0, savings: 0 },
+          history: []
+        };
 
-    // Xử lý sự kiện khi submit form
-    form.addEventListener('submit', async function(e) {
-      e.preventDefault();
-      const amount = parseFloat(document.getElementById('amount').value);
-      const type = document.getElementById('type').value;
-      const source = document.getElementById('source').value;
+        function updateUI(data) {
+          spanCash.innerHTML = `${data.balances.cash.toLocaleString()} <span>đ</span>`;
+          spanAccount.innerHTML = `${data.balances.account.toLocaleString()} <span>đ</span>`;
+          spanSavings.innerHTML = `${data.balances.savings.toLocaleString()} <span>đ</span>`;
+          
+          const total = data.balances.cash + data.balances.account + data.balances.savings;
+          spanTotal.innerHTML = `${total.toLocaleString()} <span>đ</span>`;
 
-      const sourceNames = {
-        cash: 'Tiền mặt',
-        account: 'Tài khoản',
-        savings: 'Tiết kiệm'
-      };
+          historyDiv.innerHTML = '';
+          const historyArr = data.history || [];
+          if (historyArr.length === 0) {
+              historyDiv.innerHTML = '<p class="empty-msg">Chưa có giao dịch nào gần đây.</p>';
+              return;
+          }
 
-      const now = new Date();
-      const timeString = now.toLocaleDateString('vi-VN') + ' ' + now.toLocaleTimeString('vi-VN', { hour: '2-digit', minute: '2-digit' });
+          historyArr.slice(0, 8).forEach(item => {
+            historyDiv.innerHTML += `<div class="history-item">${item}</div>`;
+          });
+        }
 
-      let record;
-      if (type === 'in') {
-        currentData.balances[source] += amount;
-        record = `[${timeString}] <b style="color: green;">+${amount.toLocaleString()}</b> (${sourceNames[source]} - Tiền vào)`;
-      } else {
-        currentData.balances[source] -= amount;
-        record = `[${timeString}] <b style="color: red;">-${amount.toLocaleString()}</b> (${sourceNames[source]} - Tiền ra)`;
-      }
+        const docRef = doc(db, "finances", "data");
+        onSnapshot(docRef, (docSnap) => {
+          if (docSnap.exists()) {
+            currentData = docSnap.data();
+            updateUI(currentData);
+          } else {
+            setDoc(docRef, currentData);
+          }
+        });
 
-      currentData.history.unshift(record);
+        form.addEventListener('submit', async function(e) {
+          e.preventDefault();
+          const amount = parseFloat(document.getElementById('amount').value);
+          const type = document.getElementById('type').value;
+          const source = document.getElementById('source').value;
 
-      // Lưu đè lên Firebase đám mây -> Tự động đồng bộ sang tất cả thiết bị đang mở web
-      try {
-        await setDoc(docRef, currentData);
-        form.reset();
-      } catch (error) {
-        alert("Lỗi khi lưu dữ liệu lên hệ thống!");
-        console.error(error);
-      }
-    });
-  </script>
+          const sourceNames = { cash: 'Tiền mặt', account: 'Tài khoản', savings: 'Tiết kiệm' };
+          const now = new Date();
+          const timeString = now.toLocaleDateString('vi-VN') + ' ' + now.toLocaleTimeString('vi-VN', { hour: '2-digit', minute: '2-digit' });
+
+          let record;
+          if (type === 'in') {
+            currentData.balances[source] += amount;
+            record = `<span class="time">${timeString}</span> <span class="tag-in">+${amount.toLocaleString()} đ</span> <span class="desc">(${sourceNames[source]} - Thu)</span>`;
+          } else {
+            currentData.balances[source] -= amount;
+            record = `<span class="time">${timeString}</span> <span class="tag-out">-${amount.toLocaleString()} đ</span> <span class="desc">(${sourceNames[source]} - Chi)</span>`;
+          }
+
+          currentData.history.unshift(record);
+
+          try {
+            await setDoc(docRef, currentData);
+            form.reset();
+          } catch (error) {
+            alert("Lỗi khi lưu dữ liệu lên hệ thống!");
+            console.error(error);
+          }
+        });
+    </script>
+</body>
 </html>
