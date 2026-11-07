@@ -397,3 +397,110 @@ footer {
   font-size: 13px;
   border-top: 1px solid var(--card-border);
 }
+/* ==========================================
+   TỐI ƯU GIAO DIỆN CHO ĐIỆN THOẠI (MOBILE)
+   ========================================== */
+
+@media screen and (max-width: 768px) {
+  /* 1. HEADER & MENU DẠNG ICON TRÊN MOBILE */
+  .main-header {
+    height: auto;
+    padding: 12px 15px;
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .logo {
+    font-size: 18px;
+  }
+
+  nav ul {
+    width: 100%;
+    justify-content: space-around;
+    gap: 4px;
+  }
+
+  nav ul li a {
+    font-size: 12px;
+    padding: 6px 10px;
+    flex-direction: column; /* Đặt Icon nằm trên chữ cho gọn */
+    gap: 2px;
+  }
+
+  nav ul li a i {
+    font-size: 16px;
+  }
+
+  /* 2. KHUNG NỘI DUNG CHÍNH (CONTAINER) */
+  .container {
+    margin: 15px auto;
+    padding: 0 10px;
+  }
+
+  .hero-card, .section-card {
+    padding: 20px 15px;
+    border-radius: 12px;
+  }
+
+  .hero-card h1 {
+    font-size: 22px;
+  }
+
+  /* 3. CARDS THỐNG KÊ TÀI CHÍNH (XẾP 2 CỘT GỌN GÀNG) */
+  .finance-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 10px;
+  }
+
+  .stat-card {
+    padding: 12px;
+    flex-direction: column;
+    text-align: center;
+    gap: 8px;
+  }
+
+  .stat-icon {
+    width: 40px;
+    height: 40px;
+    font-size: 16px;
+  }
+
+  .stat-info h3 {
+    font-size: 15px;
+  }
+
+  /* 4. BẢNG LỊCH HỌC HỖ TRỢ VUỐT NGANG */
+  .table-responsive {
+    -webkit-overflow-scrolling: touch; /* Vuốt mượt trên iOS */
+  }
+
+  table#tkb {
+    min-width: 650px; /* Giữ kích thước chuẩn để không bị co chữ, cho phép cuộn ngang */
+    font-size: 12px;
+  }
+
+  table#tkb th, table#tkb td {
+    padding: 8px 4px;
+  }
+
+  /* 5. FORM NHẬP TÀI CHÍNH VÀ NÚT BẤM */
+  .form-grid {
+    grid-template-columns: 1fr; /* Nhập liệu từng dòng trên di động */
+  }
+
+  .btn-submit {
+    padding: 14px;
+    font-size: 15px;
+  }
+
+  /* 6. LỊCH SỬ GIAO DỊCH & LIÊN HỆ */
+  .history-item {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 4px;
+  }
+
+  .contact-grid {
+    grid-template-columns: 1fr;
+  }
+}
