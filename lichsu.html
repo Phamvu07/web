@@ -3,29 +3,60 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <title>Toàn bộ lịch sử giao dịch - Phạm Văn Vũ</title>
+    <!-- Google Fonts & FontAwesome Icons -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="stylesheet" href="Dinhdang.css">
-    <title>Toàn bộ lịch sử giao dịch</title>
 </head>
-<body style="padding: 20px 0;">
+<body style="padding-bottom: 30px;">
 
-    <div class="container">
-        <div class="history-header" style="margin-bottom: 25px;">
-            <h2><i class="fa-solid fa-receipt"></i> Toàn Bộ Lịch Sử Giao Dịch</h2>
-            <a href="index.html" class="btn-submit" style="width: auto; margin-top: 0; padding: 8px 18px;">
-                <i class="fa-solid fa-arrow-left"></i> Quay lại Dashboard
+    <!-- HEADER / TIÊU ĐỀ TRANG -->
+    <header class="main-header">
+        <div class="logo">
+            <i class="fa-solid fa-shapes"></i> <span>PVV</span>.DASHBOARD
+        </div>
+    </header>
+
+    <main class="container">
+        <!-- TIÊU ĐỀ & NÚT QUAY LẠI -->
+        <div class="history-page-header">
+            <div>
+                <h2><i class="fa-solid fa-receipt"></i> Lịch Sử Giao Dịch</h2>
+                <p class="section-sub">Dữ liệu được lưu trữ & đồng bộ trực tuyến trên Cloud Firebase</p>
+            </div>
+            <a href="index.html" class="btn-back">
+                <i class="fa-solid fa-arrow-left"></i> Trang Chủ
             </a>
         </div>
 
-        <div id="full-history-container" class="section-card">
-            <p style="color: var(--text-muted);">Đang tải dữ liệu từ Cloud Firebase...</p>
+        <!-- THỐNG KÊ TỔNG QUAN LỊCH SỬ -->
+        <div class="history-summary-card">
+            <div class="summary-item">
+                <i class="fa-solid fa-list-ol"></i>
+                <div>
+                    <span>Tổng số giao dịch</span>
+                    <strong id="total-count">0</strong>
+                </div>
+            </div>
         </div>
-    </div>
 
+        <!-- DANH SÁCH LỊCH SỬ GIAO DỊCH -->
+        <div id="full-history-container" class="section-card">
+            <div class="loading-state">
+                <i class="fa-solid fa-spinner fa-spin"></i> Đang tải dữ liệu từ Cloud...
+            </div>
+        </div>
+    </main>
+
+    <footer>
+        <p>&copy; 2026 Phạm Văn Vũ. Personal Management System.</p>
+    </footer>
+
+    <!-- FIREBASE MODULE SCRIPT -->
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
-        import { getFirestore, doc, getDoc } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
+        import { getFirestore, doc, getDoc, onSnapshot } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
 
         const firebaseConfig = {
           apiKey: "AIzaSyBjEgSWjNFH2UvYkV4qQWb-oEDJ1RSoahI",
@@ -40,39 +71,43 @@
         const db = getFirestore(app);
 
         const container = document.getElementById('full-history-container');
+        const countSpan = document.getElementById('total-count');
 
-        async function loadFullHistory() {
-            try {
-                const docRef = doc(db, "finances", "data");
-                const docSnap = await getDoc(docRef);
+        // Lắng nghe dữ liệu thời gian thực
+        const docRef = doc(db, "finances", "data");
+        onSnapshot(docRef, (docSnap) => {
+            if (docSnap.exists()) {
+                const data = docSnap.data();
+                const historyArr = data.history || [];
 
-                if (docSnap.exists()) {
-                    const data = docSnap.data();
-                    const historyArr = data.history || [];
+                countSpan.textContent = historyArr.length;
 
-                    if (historyArr.length === 0) {
-                        container.innerHTML = '<p style="color: var(--text-muted);">Chưa có giao dịch nào được ghi nhận.</p>';
-                        return;
-                    }
-
-                    let html = '<div class="history-list">';
-                    historyArr.forEach((item, index) => {
-                        html += `<div class="history-item">
-                                    <span><b>#${index + 1}</b> &nbsp; ${item}</span>
-                                 </div>`;
-                    });
-                    html += '</div>';
-                    container.innerHTML = html;
-                } else {
-                    container.innerHTML = '<p style="color: var(--text-muted);">Không tìm thấy dữ liệu.</p>';
+                if (historyArr.length === 0) {
+                    container.innerHTML = `
+                        <div class="empty-history">
+                            <i class="fa-solid fa-folder-open"></i>
+                            <p>Chưa có giao dịch nào được ghi nhận.</p>
+                        </div>`;
+                    return;
                 }
-            } catch (error) {
-                container.innerHTML = '<p style="color: #f87171;">Lỗi khi tải dữ liệu từ hệ thống!</p>';
-                console.error(error);
-            }
-        }
 
-        loadFullHistory();
+                let html = '<div class="history-list full-list">';
+                historyArr.forEach((item, index) => {
+                    html += `
+                        <div class="history-item full-item">
+                            <div class="item-index">#${historyArr.length - index}</div>
+                            <div class="item-details">${item}</div>
+                        </div>`;
+                });
+                html += '</div>';
+                container.innerHTML = html;
+            } else {
+                container.innerHTML = '<p class="empty-msg">Không tìm thấy dữ liệu trên Cloud.</p>';
+            }
+        }, (error) => {
+            container.innerHTML = '<p class="error-msg"><i class="fa-solid fa-circle-exclamation"></i> Lỗi khi kết nối dữ liệu!</p>';
+            console.error(error);
+        });
     </script>
 </body>
 </html>
